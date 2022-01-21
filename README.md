@@ -1,2 +1,3 @@
-# homelab
-Deployment of homelab services via docker-compose
+# Homelab services deployed via docker-compose
+
+- OpenGrok

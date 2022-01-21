@@ -1,0 +1,24 @@
+version: "3.1"
+services:
+
+  opengrok:
+    container_name: opengrok
+    image: opengrok/docker:latest
+
+    environment:
+      # Disable automatic sync
+      SYNC_PERIOD_MINUTES: "0"
+      # Listen for manual sync internally on port 8081
+      REST_PORT: 8081
+    volumes:
+      - /home/opengrok/Source:/opengrok/src/
+      - /home/opengrok/Data:/opengrok/data/
+      - /home/opengrok/Etc:/opengrok/etc/
+    ports:
+      - "3002:8080"
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  src:
