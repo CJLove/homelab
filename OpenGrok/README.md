@@ -1,4 +1,4 @@
-h# OpenGrok notes
+# OpenGrok notes
 
 ## Volumes from the host:
 - `/home/opengrok/Etc` - configuration files
