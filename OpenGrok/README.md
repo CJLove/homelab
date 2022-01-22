@@ -1,4 +1,5 @@
 # OpenGrok notes
+- Deploys OpenGrok: https://oracle.github.io/opengrok/
 
 ## Volumes from the host:
 - `/home/opengrok/Etc` - configuration files
