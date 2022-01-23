@@ -6,6 +6,7 @@ This repo deploys various homelab services via `docker-compose`:
 - Nginx with Artstore service
 - Docker registry and UI
 - Uptime-kuma dashboard
+- Grafana & Loki
 
 ## Conventions
 I have separate users created for each service on the host, going back to when I was running these
