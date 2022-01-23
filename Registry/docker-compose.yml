@@ -1,0 +1,44 @@
+version: "3.1"
+services:
+  registry:
+    image: registry:latest
+    container_name: registry
+    volumes:
+      - /home/registry/registry:/var/lib/registry
+      - /home/registry/reg_certs:/certs
+      - /home/registry/config.yml:/etc/docker/registry/config.yml
+    environment:
+      REGISTRY_STORAGE_DELETE_ENABLED: true
+      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/registry.crt
+      REGISTRY_HTTP_TLS_KEY: /certs/registry.key
+    networks:
+      - registrynet
+    ports:
+      - "3005:5000"
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+  registryui:
+    image: quiq/docker-registry-ui:latest
+    container_name: registry-ui
+    volumes:
+      - /home/registry/ui_config.yml:/opt/config.yml
+      - /home/registry/data:/opt/data
+      - /home/registry/reg_certs/ca.crt:/etc/ssl/certs/ca-certificates.crt
+    environment:
+      TZ: "America/Los_Angeles"
+    depends_on:
+      - registry
+    dns:
+      - 192.168.1.129
+    networks:
+      - registrynet
+    ports:
+      - "3006:8000"
+    restart: on-failure
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  registrynet:
