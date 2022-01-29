@@ -7,6 +7,7 @@ This repo deploys various homelab services via `docker-compose`:
 - Docker registry and UI
 - Uptime-kuma dashboard
 - Grafana & Loki
+- PiHole
 
 ## Conventions
 I have separate users created for each service on the host, going back to when I was running these
