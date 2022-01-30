@@ -8,8 +8,6 @@ services:
       POSTGRES_DB: wiki
       POSTGRES_PASSWORD: wikijsrocks
       POSTGRES_USER: wikijs
-    logging:
-      driver: "none"
     volumes:
       - /home/wiki/db-data:/var/lib/postgresql/data
     networks:
