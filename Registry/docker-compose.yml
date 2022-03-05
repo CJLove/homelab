@@ -20,6 +20,8 @@ services:
       - no-new-privileges:true
 
   registryui:
+    dns:
+      - "192.168.1.129" # Local DNS
     image: quiq/docker-registry-ui:latest
     container_name: registry-ui
     volumes:

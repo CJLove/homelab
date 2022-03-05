@@ -4,7 +4,7 @@ listen_addr: 0.0.0.0:8000
 base_path: /
 
 # Registry URL with schema and port.
-registry_url: https://oak.local:3005
+registry_url: https://fir.local:3005
 # Verify TLS certificate when using https.
 verify_tls: true
 
