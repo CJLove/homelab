@@ -1,0 +1,18 @@
+version: '3'
+services:
+  pigallery2:
+    image: bpatrik/pigallery2:latest
+    container_name: pigallery2
+    environment:
+      - NODE_ENV=production # set to 'debug' for full debug logging
+    volumes:
+      - "/home/pigallery2/config:/app/data/config" 
+      - "/home/pigallery2/db-data:/app/data/db"
+      - "/share/Pictures:/app/data/images:ro" 
+      - "/home/pigallery2/tmp:/app/data/tmp"
+    ports:
+      - 3011:80
+    restart: always
+
+volumes:
+  db-data:
