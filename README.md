@@ -9,6 +9,7 @@ This repo deploys various homelab services via `docker-compose`:
 - Grafana & Loki
 - PiHole
 - PiGallery2
+- JellyFin
 
 ## Conventions
 I have separate users created for each service on the host, going back to when I was running these

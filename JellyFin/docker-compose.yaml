@@ -6,14 +6,14 @@ services:
     #user: 1001:1001
     network_mode: 'host'
     volumes:
-      - /extra/jellyfin/config:/config
-      - /extra/jellyfin/cache:/cache
-      - /extra/jellyfin/media:/media
-      - /extra/jellyfin/media2:/media2:ro
+      - /home/jellyfin/config:/config
+      - /home/jellyfin/cache:/cache
+      - /home/jellyfin/media:/media
+      - /home/jellyfin/media2:/media2:ro
     restart: 'unless-stopped'
     # Optional - alternative address used for autodiscovery
     environment:
-      - JELLYFIN_PublishedServerUrl=http://elm.love.io:8096
+      - JELLYFIN_PublishedServerUrl=http://aspen.love.io:8096
     # Optional - may be necessary for docker healthcheck to pass if running in host network mode
     #extra_hosts:
     #  - "host.docker.internal:host-gateway"
