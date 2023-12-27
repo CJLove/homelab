@@ -1,0 +1,19 @@
+---
+meta:
+  storage:
+    type: fs
+    path: /var/artipie/repo
+  credentials:
+    - type: artipie
+      storage:
+        type: fs
+        path: /var/artipie/
+  policy:
+    type: artipie
+    storage:
+      type: fs
+      path: /var/artipie/security
+  base_url: http://art.love.io
+  metrics:
+    endpoint: "/metrics"
+    port: 8087
