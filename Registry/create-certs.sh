@@ -1,28 +1,109 @@
-# Sample script to create certificate authority and self-signed certificate
+#!/bin/bash
+# Script to create certificate authority and/or self-signed certificate
 #
-# Usage:
-# create-certs.sh <path> <shortHost> <fullHost> <ip> <alias>
-if [ #! -ne 5 ];
-then
-    echo "Usage:"
-    echo "create-certs.sh <path> <shortHost> <fullHost> <ip> <alias>"
-    exit 1
-fi
 
-PTH=$1
-SHORT=$2
-FULL=$3
-IP=$4
-ALIAS=$5
+function ShowUsage()
+{
+    cat <<EOT
+$(basename "$0") --path=<path> options
+    [--caCrt=<ca.crt>]
+    [--caKey=<ca.key>]
+    [--host=<shortHost>]
+    [--full=<fullHost>]
+    [--ip=<IP address>]
+    [--alias=<alias>]
+EOT
+    return 0
+}
 
-echo "Creating certs in ${PTH}/reg_certs for host ${SHORT} (${FULL}) ip ${IP} alias ${ALIAS}..."
+PARAM_CA_CRT=
+PARAM_CA_KEY=
+PARAM_PATH=
+PARAM_HOST=
+PARAM_FULL=
+PARAM_IP=
+PARAM_ALIAS=
+
+while test $# -gt 0; do
+    param="$1"
+    if test "${1::1}" = "-"; then
+        if test ${#1} -gt 2 -a "${1::2}" = "--" ; then
+            param="${1:2}"
+        else
+            param="${1:1}"
+        fi
+    else
+        break
+    fi
+
+    shift
+
+    case $param in
+    caCrt=*)
+        PARAM_CA_CRT=$(echo "$param"|cut -f2 -d'=')
+        ;;
+    caKey=*)
+        PARAM_CA_KEY=$(echo "$param"|cut -f2 -d'=')
+        ;;
+    path=*)
+        PARAM_PATH=$(echo "$param"|cut -f2 -d'=')
+        ;;
+    host=*)
+        PARAM_HOST=$(echo "$param"|cut -f2 -d'=')
+        ;;
+    full=*)
+        PARAM_FULL=$(echo "$param"|cut -f2- -d'=')
+        ;;
+    ip=*)
+        PARAM_IP=$(echo "$param"|cut -f2- -d'=')
+        ;;
+    alias=*)
+        PARAM_ALIAS=$(echo "$param"|cut -f2- -d'=')
+        ;;
+    help|h|?|-?)
+        ShowUsage
+        exit 0
+        ;;
+    *)
+        echo "Error: Unknown parameter: $param"
+        ShowUsage
+        exit 2
+        ;;    
+    esac
+done
+
+echo "Creating certs in ${PARAM_PATH}/reg_certs for host ${PARAM_HOST} (${PARAM_FULL}) ip ${PARAM_IP} alias ${PARAM_ALIAS}..."
 
 # Define where to store the generated certs and metadata.
-DIR="${PTH}/reg_certs"
+DIR="${PARAM_PATH}"
 
 # Optional: Ensure the target directory exists and is empty.
 rm -rf "${DIR}"
 mkdir -p "${DIR}"
+
+# If not specified then we will generate a root CA
+[ -z "$PARAM_CA_KEY" ] && PARAM_CA_KEY="${DIR}/ca.key"
+[ -z "$PARAM_CA_CRT" ] && PARAM_CA_CRT="${DIR}/ca.crt"
+
+# If necessary, create the certificate authority (CA). This will be a self-signed CA, 
+# and this command generates both the private key and the certificate. 
+if [ ! -f "${PARAM_CA_KEY}" ] || [ ! -f "${PARAM_CA_CRT}" ]; then
+  echo "Generating root CA"
+  openssl req \
+    -new \
+    -newkey rsa:2048 \
+    -days 999 \
+    -nodes \
+    -x509 \
+    -subj "/C=US/ST=CA/L=San Diego/O=Chris Love CA" \
+    -keyout "${PARAM_CA_KEY}" \
+    -out "${PARAM_CA_CRT}"
+else
+  echo "Using existing root CA"
+fi
+
+# If only generate the root CA then exit here
+[ -z "${PARAM_HOST}" ] && exit 1 
 
 # Create the openssl configuration file. This is used for both generating
 # the certificate as well as for specifying the extensions. It aims in favor
@@ -47,7 +128,7 @@ C  = US
 ST = CA
 L  = San Diego
 O  = Demo
-CN = ${FULL}
+CN = ${PARAM_FULL}
 
 # Allow client and server auth. You may want to only allow server auth.
 # Link to SAN names.
@@ -61,36 +142,13 @@ subjectAltName       = @alt_names
 # Alternative names are specified as IP.# and DNS.# for IP addresses and
 # DNS accordingly. 
 [alt_names]
-IP.1  = ${IP}
+IP.1  = ${PARAM_IP}
 IP.2  = 127.0.0.1
-DNS.1 = ${SHORT}.local
-DNS.2 = ${SHORT}
+DNS.1 = ${PARAM_HOST}.local
+DNS.2 = ${PARAM_HOST}
 DNS.3 = localhost
-DNS.4 = ${ALIAS}
+DNS.4 = ${PARAM_ALIAS}
 EOF
-
-# Create the certificate authority (CA). This will be a self-signed CA, and this
-# command generates both the private key and the certificate. You may want to 
-# adjust the number of bits (4096 is a bit more secure, but not supported in all
-# places at the time of this publication). 
-#
-# To put a password on the key, remove the -nodes option.
-#
-# Be sure to update the subject to match your organization.
-if [ ! -f ${DIR}/ca.key -a ! -f ${DIR}/ca.crt ]; then
-  echo "Generating root CA"
-  openssl req \
-    -new \
-    -newkey rsa:2048 \
-    -days 999 \
-    -nodes \
-    -x509 \
-    -subj "/C=US/ST=CA/L=San Diego/O=Chris Love CA" \
-    -keyout "${DIR}/ca.key" \
-    -out "${DIR}/ca.crt"
-else
-  echo "Using existing root CA"
-fi
 
 #
 # For each server/service you want to secure with your CA, repeat the
@@ -99,13 +157,13 @@ fi
 
 # Generate the private key for the service. Again, you may want to increase
 # the bits to 4096.
-openssl genrsa -out "${DIR}/registry.key" 2048
+openssl genrsa -out "${DIR}/${PARAM_HOST}.key" 2048
 
 # Generate a CSR using the configuration and the key just generated. We will
 # give this CSR to our CA to sign.
 openssl req \
-  -new -key "${DIR}/registry.key" \
-  -out "${DIR}/registry.csr" \
+  -new -key "${DIR}/${PARAM_HOST}.key" \
+  -out "${DIR}/${PARAM_HOST}.csr" \
   -config "${DIR}/openssl.cnf"
   
 # Sign the CSR with our CA. This will generate a new certificate that is signed
@@ -113,33 +171,13 @@ openssl req \
 openssl x509 \
   -req \
   -days 999 \
-  -in "${DIR}/registry.csr" \
-  -CA "${DIR}/ca.crt" \
-  -CAkey "${DIR}/ca.key" \
+  -in "${DIR}/${PARAM_HOST}.csr" \
+  -CA "${PARAM_CA_CRT}" \
+  -CAkey "${PARAM_CA_KEY}" \
   -CAcreateserial \
   -extensions v3_req \
   -extfile "${DIR}/openssl.cnf" \
-  -out "${DIR}/registry.crt"
+  -out "${DIR}/${PARAM_HOST}.crt"
 
 # (Optional) Verify the certificate.
-openssl x509 -in "${DIR}/registry.crt" -noout -text
-
-# Here is a sample response (truncate):
-#
-# Certificate:
-#     Signature Algorithm: sha256WithRSAEncryption
-#         Issuer: C = US, ST = CA, L = San Diego, O = My Organization CA
-#         Subject: C = US, ST = CA, L = San Diego, O = Demo, CN = My Certificate
-#         # ...
-#         X509v3 extensions:
-#             X509v3 Basic Constraints:
-#                 CA:FALSE
-#             X509v3 Subject Key Identifier:
-#                 36:7E:F0:3D:93:C6:ED:02:22:A9:3D:FF:18:B6:63:5F:20:52:6E:2E
-#             X509v3 Key Usage:
-#                 Digital Signature, Key Encipherment
-#             X509v3 Extended Key Usage:
-#                 TLS Web Client Authentication, TLS Web Server Authentication
-#             X509v3 Subject Alternative Name:
-#                 IP Address:1.2.3.4, DNS:my.dns.name
-#
+openssl x509 -in "${DIR}/${PARAM_HOST}.crt" -noout -text

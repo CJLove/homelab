@@ -1,4 +1,5 @@
 # Homelab services
+
 This repo deploys various homelab services via `docker-compose`:
 
 - OpenGrok
@@ -11,8 +12,10 @@ This repo deploys various homelab services via `docker-compose`:
 - PiGallery2
 - JellyFin
 - Artipie
+- Homepage
 
 ## Conventions
+
 I have separate users created for each service on the host, going back to when I was running these
 services rootless using Podman. Each user is added to the `docker` group and the service is started as follows:
 
