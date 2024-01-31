@@ -1,2 +1,4 @@
 # Docker compose environment files
 *.env
+# Data directories
+data*
