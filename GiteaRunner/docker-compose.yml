@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  runner1:
+    image: gitea/act_runner:latest
+    restart: always
+    environment:
+      CONFIG_FILE: /config.yaml
+      GITEA_INSTANCE_URL: "${INSTANCE_URL}"
+      GITEA_RUNNER_REGISTRATION_TOKEN: "${REGISTRATION_TOKEN}"
+      GITEA_RUNNER_NAME: "${RUNNER1_NAME}"
+      GITEA_RUNNER_LABELS: "${RUNNER1_LABELS}"
+    volumes:
+      - ./config.yaml:/config.yaml
+      - ./data1:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  runner2:
+    image: gitea/act_runner:latest
+    restart: always
+    environment:
+      CONFIG_FILE: /config.yaml
+      GITEA_INSTANCE_URL: "${INSTANCE_URL}"
+      GITEA_RUNNER_REGISTRATION_TOKEN: "${REGISTRATION_TOKEN}"
+      GITEA_RUNNER_NAME: "${RUNNER2_NAME}"
+      GITEA_RUNNER_LABELS: "${RUNNER2_LABELS}"
+    volumes:
+      - ./config.yaml:/config.yaml
+      - ./data2:/data
+      - /var/run/docker.sock:/var/run/docker.sock
