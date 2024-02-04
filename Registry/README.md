@@ -1,7 +1,7 @@
 # Docker registry and registry UI
 
 This deploys a local Docker registry via https using a self-signed certificate
-along with the Quiq Registry UI [docker-registry-ui](https://hub.docker.com/r/quiq/docker-registry-ui/tags/)
+along with the [Joxit Docker registry](https://github.com/Joxit/docker-registry-ui)
 
 ## Registry
 
@@ -13,7 +13,7 @@ along with the Quiq Registry UI [docker-registry-ui](https://hub.docker.com/r/qu
 
 ## Registry UI
 
-### Volumes mounted from host
+### UI Volumes mounted from host
 
 - `/home/registry/ui_config.yml` - UI configuration
 - `/home/registry/data` - UI state information

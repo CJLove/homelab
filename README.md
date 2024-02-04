@@ -20,7 +20,7 @@ I have separate users created for each service on the host, going back to when I
 services rootless using Podman. Each user is added to the `docker` group and the service is started as follows:
 
 ```bash
-$ docker-compose up -d --force-recreate
+docker-compose up -d --force-recreate
 ```
 
 Where appropriate the user home directory is backed up.

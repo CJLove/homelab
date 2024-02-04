@@ -1,4 +1,4 @@
-version: "3.1"
+version: "3.8"
 services:
   registry:
     image: registry:latest
@@ -11,36 +11,39 @@ services:
       REGISTRY_STORAGE_DELETE_ENABLED: true
       REGISTRY_HTTP_TLS_CERTIFICATE: /certs/registry.crt
       REGISTRY_HTTP_TLS_KEY: /certs/registry.key
-    networks:
-      - registrynet
+      # Handled via registry config.yml:
+      # REGISTRY_HTTP_HEADERS_Access-Control-Allow-Origin: '[http://fir.love.io:3006]'
+      # REGISTRY_HTTP_HEADERS_Access-Control-Allow-Methods: '[HEAD,GET,OPTIONS,DELETE]'
+      # REGISTRY_HTTP_HEADERS_Access-Control-Allow-Credentials: '[true]'
+      # REGISTRY_HTTP_HEADERS_Access-Control-Allow-Headers: '[Authorization,Accept,Cache-Control]'
+      # REGISTRY_HTTP_HEADERS_Access-Control-Expose-Headers: '[Docker-Content-Digest]'
+
     ports:
       - "3005:5000"
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
 
-  registryui:
-    dns:
-      - "192.168.1.129" # Local DNS
-    image: quiq/docker-registry-ui:latest
-    container_name: registry-ui
-    volumes:
-      - /home/registry/ui_config.yml:/opt/config.yml
-      - /home/registry/data:/opt/data
-      - /home/registry/reg_certs/ca.crt:/etc/ssl/certs/ca-certificates.crt
+  registry-ui:
+    image: joxit/docker-registry-ui:main
+    restart: always
+    ports:
+      - 3006:80
     environment:
-      TZ: "America/Los_Angeles"
+      - SINGLE_REGISTRY=true
+      - REGISTRY_TITLE=Docker Registry UI
+      - DELETE_IMAGES=true
+      - SHOW_CONTENT_DIGEST=true
+      - REGISTRY_URL=https://fir.love.io:3005
+      - SHOW_CATALOG_NB_TAGS=true
+      - CATALOG_MIN_BRANCHES=1
+      - CATALOG_MAX_BRANCHES=1
+      - TAGLIST_PAGE_SIZE=100
+      - REGISTRY_SECURED=false
+      - CATALOG_ELEMENTS_LIMIT=1000
+    container_name: docker-registry-ui
     depends_on:
       - registry
     dns:
       - 192.168.1.129
-    networks:
-      - registrynet
-    ports:
-      - "3006:8000"
-    restart: on-failure
-    security_opt:
-      - no-new-privileges:true
 
-networks:
-  registrynet:

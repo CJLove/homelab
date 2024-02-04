@@ -1,12 +1,16 @@
 version: "3.3"
 services:
   artipie:
-    image: artipie/artipie:latest
+    image: artipie/artipie:v0.30.12
     container_name: artipie
     restart: unless-stopped
+      #    environment:
+      #- ARTIPIE_USER_NAME=artipie
+      #- ARTIPIE_USER_PASS=artipie
     volumes:
       - /home/artipie/artipie.yml:/etc/artipie/artipie.yml
       - /home/artipie/repo:/var/artipie/repo
+      - /home/artipie/data:/var/artipie/data
       - /home/artipie/security:/var/artipie/security
     networks:
       - artipie-net
