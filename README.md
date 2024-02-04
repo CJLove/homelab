@@ -13,6 +13,7 @@ This repo deploys various homelab services via `docker-compose`:
 - JellyFin
 - Artipie
 - Homepage
+- Gitea runners
 
 ## Conventions
 
