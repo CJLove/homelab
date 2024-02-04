@@ -13,6 +13,7 @@ services:
       - ./config.yaml:/config.yaml
       - ./data1:/data
       - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/certs:/etc/certs
 
   runner2:
     image: gitea/act_runner:latest
@@ -27,3 +28,34 @@ services:
       - ./config.yaml:/config.yaml
       - ./data2:/data
       - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/certs:/etc/certs
+
+  runner3:
+    image: gitea/act_runner:latest
+    restart: always
+    environment:
+      CONFIG_FILE: /config.yaml
+      GITEA_INSTANCE_URL: "${INSTANCE_URL}"
+      GITEA_RUNNER_REGISTRATION_TOKEN: "${REGISTRATION_TOKEN}"
+      GITEA_RUNNER_NAME: "${RUNNER3_NAME}"
+      GITEA_RUNNER_LABELS: "${RUNNER3_LABELS}"
+    volumes:
+      - ./config.yaml:/config.yaml
+      - ./data3:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/certs:/etc/certs
+
+  runner4:
+    image: gitea/act_runner:latest
+    restart: always
+    environment:
+      CONFIG_FILE: /config.yaml
+      GITEA_INSTANCE_URL: "${INSTANCE_URL}"
+      GITEA_RUNNER_REGISTRATION_TOKEN: "${REGISTRATION_TOKEN}"
+      GITEA_RUNNER_NAME: "${RUNNER4_NAME}"
+      GITEA_RUNNER_LABELS: "${RUNNER4_LABELS}"
+    volumes:
+      - ./config.yaml:/config.yaml
+      - ./data4:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/certs:/etc/certs
