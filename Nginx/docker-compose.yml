@@ -13,18 +13,6 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-  artstore:
-    image: fir.love.io:3005/amd64/artstore:latest
-    container_name: artstore
-    volumes:
-      - /home/nginx/artstore:/etc/artstore
-      - /home/nginx/www:/home/nginx/www
-    networks:
-      - nginxnet
-    restart: on-failure
-    security_opt:
-      - no-new-privileges:true
-
 
 networks:
   nginxnet:
