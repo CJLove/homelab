@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   runner1:
-    image: gitea/act_runner:latest
+    image: gitea/act_runner:0.2.11
     restart: always
     environment:
       CONFIG_FILE: /config.yaml
@@ -16,7 +16,7 @@ services:
       - /etc/certs:/etc/certs
 
   runner2:
-    image: gitea/act_runner:latest
+    image: gitea/act_runner:0.2.11
     restart: always
     environment:
       CONFIG_FILE: /config.yaml
@@ -31,7 +31,7 @@ services:
       - /etc/certs:/etc/certs
 
   runner3:
-    image: gitea/act_runner:latest
+    image: gitea/act_runner:0.2.11
     restart: always
     environment:
       CONFIG_FILE: /config.yaml
@@ -46,7 +46,7 @@ services:
       - /etc/certs:/etc/certs
 
   runner4:
-    image: gitea/act_runner:latest
+    image: gitea/act_runner:0.2.11
     restart: always
     environment:
       CONFIG_FILE: /config.yaml
