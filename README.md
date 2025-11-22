@@ -14,6 +14,7 @@ This repo deploys various homelab services via `docker-compose`:
 - Artipie
 - Homepage
 - Gitea runners
+- Dozzle
 
 ## Conventions
 
