@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   registry:
-    image: registry:latest
+    image: registry:2
     container_name: registry
     volumes:
       - /home/registry/registry:/var/lib/registry
@@ -25,7 +25,7 @@ services:
       - no-new-privileges:true
 
   registry-ui:
-    image: joxit/docker-registry-ui:latest
+    image: joxit/docker-registry-ui:2.5.7
     restart: always
     ports:
       - 3006:80
