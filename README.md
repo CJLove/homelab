@@ -15,6 +15,7 @@ This repo deploys various homelab services via `docker-compose`:
 - Homepage
 - Gitea runners
 - Dozzle
+- Watchtower
 
 ## Conventions
 

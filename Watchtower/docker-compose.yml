@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=300 # Check for updates every 300 seconds (5 minutes)
+      - WATCHTOWER_CLEANUP=true # Remove old images after updating
+      - 'WATCHTOWER_NOTIFICATIONS=shoutrrr'
+      - 'WATCHTOWER_NOTIFICATION_URL=discord://${DISCORD_TOKEN}@${DISCORD_ID}'
+      #- 'WATCHTOWER_NOTIFICATION_TEMLATE={{range .}}{{.Time.Format "12-01-2020 15:04:05"}} ({{.Level}})\':\' {{.Message}}{{println}}{{end}}'
+    restart: unless-stopped
