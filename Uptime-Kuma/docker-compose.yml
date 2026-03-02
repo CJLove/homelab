@@ -9,6 +9,10 @@ services:
       - /home/dash/data:/app/data
     ports:
       - 3010:3001
+    environment:
+      - UPTIME_KUMA_SSL_KEY=/app/data/registry.key
+      - UPTIME_KUMA_SSL_CERT=/app/data/registry.crt
+      - NODE_EXTRA_CA_CERTS=/app/data/ca.crt
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

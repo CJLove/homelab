@@ -4,3 +4,6 @@ This deploys the uptime-kuma dashboard service. This is a slightly modified vers
 ## Volumes mounted from host:
 - `/home/dash/data` - Uptime-kuma state information
 
+## Environment variables
+  - Now references root ca, certificate and key files in the data volume
+
