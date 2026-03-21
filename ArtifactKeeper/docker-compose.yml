@@ -84,7 +84,7 @@ services:
     restart: "no"
 
   backend:
-    image: ghcr.io/artifact-keeper/artifact-keeper-backend:latest  # or artifactkeeper/backend:latest
+    image: ghcr.io/artifact-keeper/artifact-keeper-backend:latest # dev # latest  # or artifactkeeper/backend:latest
     container_name: artifact-keeper-backend
     depends_on:
       postgres:
@@ -134,6 +134,7 @@ services:
       DEPENDENCY_TRACK_ENABLED: ${DEPENDENCY_TRACK_ENABLED:-true}
       HOST: 0.0.0.0
       PORT: 8080
+      ALLOW_HTTP_INTEGRATIONS: "1"
     volumes:
       - artifact_storage:/data/storage
       - backup_storage:/data/backups
@@ -247,7 +248,7 @@ services:
     restart: unless-stopped
 
   web:
-    image: ghcr.io/artifact-keeper/artifact-keeper-web:latest  # or artifactkeeper/web:latest
+    image: ghcr.io/artifact-keeper/artifact-keeper-web:latest # latest  # or artifactkeeper/web:latest
     container_name: artifact-keeper-web
     depends_on:
       backend:
