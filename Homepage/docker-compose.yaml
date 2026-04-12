@@ -12,5 +12,5 @@ services:
     environment:
       PUID: $PUID # read them from .env
       PGID: $PGID # read them from .env
-      HOMEPAGE_ALLOWED_HOSTS: fir.love.io:3015
+      HOMEPAGE_ALLOWED_HOSTS: homepage.love.io:3015
     restart: unless-stopped

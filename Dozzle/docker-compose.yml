@@ -15,5 +15,5 @@ services:
       #
       # Uncomment to enable authentication. See https://dozzle.dev/guide/authentication
       # - DOZZLE_AUTH_PROVIDER=simple
-      - DOZZLE_REMOTE_AGENT=oak.love.io:7007,elm.love.io:7007,dnsbackup.love.io:7007
+      - DOZZLE_REMOTE_AGENT=oak.love.io:7007,elm.love.io:7007,ficus.love.io:7007
     restart: unless-stopped
