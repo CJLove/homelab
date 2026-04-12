@@ -1,7 +1,7 @@
 version: '3.5'
 services:
   jellyfin:
-    image: jellyfin/jellyfin
+    image: jellyfin/jellyfin:latest
     container_name: jellyfin
     #user: 1001:1001
     network_mode: 'host'
