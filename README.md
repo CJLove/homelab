@@ -16,6 +16,8 @@ This repo deploys various homelab services via `docker-compose`:
 - Gitea runners
 - Dozzle
 - Watchtower
+- Artifact-Keeper
+- NebulaSync
 
 ## Conventions
 
