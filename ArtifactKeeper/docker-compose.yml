@@ -84,7 +84,7 @@ services:
     restart: "no"
 
   backend:
-    image: ghcr.io/artifact-keeper/artifact-keeper-backend:latest # dev # latest  # or artifactkeeper/backend:latest
+    image: ghcr.io/artifact-keeper/artifact-keeper-backend:1.1.6 #latest # dev # latest  # or artifactkeeper/backend:latest
     container_name: artifact-keeper-backend
     depends_on:
       postgres:
