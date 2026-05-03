@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   runner1:
-    image: gitea/act_runner:0.3.0
+    image: gitea/act_runner:latest
     restart: always
     environment:
       CONFIG_FILE: /config.yaml
@@ -14,10 +14,10 @@ services:
       - ./data1:/data
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/certs:/etc/certs
-      - /etc/certs/ca.crt:/etc/ssl/certs/ca-certificates.crt:ro
+      - /etc/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
 
   runner2:
-    image: gitea/act_runner:0.3.0
+    image: gitea/act_runner:latest
     restart: always
     environment:
       CONFIG_FILE: /config.yaml
@@ -30,10 +30,10 @@ services:
       - ./data2:/data
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/certs:/etc/certs
-      - /etc/certs/ca.crt:/etc/ssl/certs/ca-certificates.crt:ro
+      - /etc/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
 
   runner3:
-    image: gitea/act_runner:0.3.0
+    image: gitea/act_runner:latest
     restart: always
     environment:
       CONFIG_FILE: /config.yaml
@@ -46,10 +46,10 @@ services:
       - ./data3:/data
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/certs:/etc/certs
-      - /etc/certs/ca.crt:/etc/ssl/certs/ca-certificates.crt:ro
+      - /etc/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
 
   runner4:
-    image: gitea/act_runner:0.3.0
+    image: gitea/act_runner:latest
     restart: always
     environment:
       CONFIG_FILE: /config.yaml
@@ -62,4 +62,4 @@ services:
       - ./data4:/data
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/certs:/etc/certs
-      - /etc/certs/ca.crt:/etc/ssl/certs/ca-certificates.crt:ro
+      - /etc/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
