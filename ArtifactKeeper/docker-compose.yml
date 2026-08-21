@@ -76,6 +76,8 @@ services:
   # Default credentials below are for local evaluation only.
   postgres:
     image: postgres:16-alpine
+    labels:
+     - "com.centurylinklabs.watchtower.enable=false"
     container_name: artifact-keeper-db
     depends_on:
       pg-certs:
@@ -189,6 +191,8 @@ services:
   # S3_SECRET_KEY, and STORAGE_BACKEND=s3. See .env.example for all options.
   backend:
     image: ghcr.io/artifact-keeper/artifact-keeper-backend:${ARTIFACT_KEEPER_VERSION:-latest}
+    labels:
+     - "com.centurylinklabs.watchtower.enable=false"
     container_name: artifact-keeper-backend
     depends_on:
       postgres:
@@ -312,6 +316,8 @@ services:
   # Powers artifact and package search in the UI and API.
   opensearch:
     image: opensearchproject/opensearch:2.19.1
+    labels:
+     - "com.centurylinklabs.watchtower.enable=false"
     container_name: artifact-keeper-opensearch
     environment:
       discovery.type: single-node
@@ -338,6 +344,8 @@ services:
   # TRIVY_URL on the backend if you do not need vulnerability scanning.
   trivy:
     image: ghcr.io/aquasecurity/trivy:0.69.3
+    labels:
+     - "com.centurylinklabs.watchtower.enable=false"
     container_name: artifact-keeper-trivy
     command: ["server", "--listen", "0.0.0.0:8090"]
     ports:
@@ -377,6 +385,8 @@ services:
   # this service and unset OPENSCAP_URL on the backend if not needed.
   openscap:
     image: ghcr.io/artifact-keeper/artifact-keeper-openscap:latest  # or artifactkeeper/openscap:latest
+    labels:
+     - "com.centurylinklabs.watchtower.enable=false"
     container_name: artifact-keeper-openscap
     ports:
       - "8091:8091"
@@ -404,6 +414,8 @@ services:
   # https://dependencytrack.org/
   dependency-track-apiserver:
     image: dependencytrack/apiserver:4.14.2
+    labels:
+     - "com.centurylinklabs.watchtower.enable=false"
     container_name: artifact-keeper-dtrack-api
     profiles:
       - dtrack  # Only starts with: docker compose --profile dtrack up
@@ -444,6 +456,8 @@ services:
   #   docker compose --profile dtrack --profile dtrack-ui up
   dependency-track-frontend:
     image: dependencytrack/frontend:4.14.2
+    labels:
+     - "com.centurylinklabs.watchtower.enable=false"
     container_name: artifact-keeper-dtrack-frontend
     profiles:
       - dtrack-ui  # Requires the `dtrack` profile too; see comment above.
@@ -464,6 +478,8 @@ services:
   # external access and routes requests to the appropriate service.
   web:
     image: ghcr.io/artifact-keeper/artifact-keeper-web:latest  # or artifactkeeper/web:latest
+    labels:
+     - "com.centurylinklabs.watchtower.enable=false"
     container_name: artifact-keeper-web
     depends_on:
       backend:
