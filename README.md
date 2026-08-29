@@ -18,6 +18,7 @@ This repo deploys various homelab services via `docker-compose`:
 - Watchtower
 - Artifact-Keeper
 - NebulaSync
+- Speedtest Tracker
 
 ## Conventions
 
